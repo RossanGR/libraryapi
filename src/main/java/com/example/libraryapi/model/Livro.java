@@ -35,5 +35,5 @@ public class Livro {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "autor_id")
-    private Autor autorId;
+    private Autor autor;
 }

@@ -58,7 +58,7 @@ public class AutorRepositoryTest {
         livro.setGenero(GeneroLivro.ACAO);
         livro.setTitulo("Luppan");
         livro.setDataPublicacao(LocalDate.of(2020,2,22));
-        livro.setAutorId(autor);
+        livro.setAutor(autor);
 
         autor.setLivros(new ArrayList<>());
         autor.getLivros().add(livro);

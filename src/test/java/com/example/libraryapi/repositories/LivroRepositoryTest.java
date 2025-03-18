@@ -35,7 +35,7 @@ class LivroRepositoryTest {
         autor.setNacionalidade("Brasileira");
         autor.setDataNascimento(LocalDate.of(2024,2,22));
 
-        livro.setAutorId(autor);
+        livro.setAutor(autor);
 
         repository.save(livro);
     }
