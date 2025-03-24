@@ -3,14 +3,19 @@ package com.example.libraryapi.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "livro")
 @Data // Lombock usa para criar getters e setter
+@EntityListeners(AuditingEntityListener.class)
 public class Livro {
 
     @Id
@@ -36,4 +41,15 @@ public class Livro {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "autor_id")
     private Autor autor;
+
+    @CreatedDate // Para toda vez que fizer uma criação, o JPA se responsabiliza por preencher com a data
+    @Column(name = "data_cadastro")
+    private LocalDateTime dataCadastro;
+
+    @LastModifiedDate // Para toda vez que fizer uma modificação, o JPA se responsabiliza por preencher com a data
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
+
+    @Column(name = "id_usuario")
+    private UUID idUsuario;
 }

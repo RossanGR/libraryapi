@@ -16,9 +16,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "autor")
 @EntityListeners(AuditingEntityListener.class)
-//@Data // Lombock usa para criar getters e setter
-@Getter
-@Setter
+@Data // Lombock usa para criar getters e setter
+//@Getter
+//@Setter
 public class Autor {
 
 
@@ -26,42 +26,42 @@ public class Autor {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    public UUID getId() {
-        return id;
-    }
+//    public UUID getId() {
+//        return id;
+//    }
 
     @Column(length = 100, nullable = false)
     private String nome;
 
-    public String getNome(){
-        return this.nome;
-    }
-
-    public void setNome(String nome){
-        this.nome = nome;
-    }
+//    public String getNome(){
+//        return this.nome;
+//    }
+//
+//    public void setNome(String nome){
+//        this.nome = nome;
+//    }
 
     @Column(nullable = false)
     private LocalDate dataNascimento;
 
-    public LocalDate getDataNascimento(){
-        return this.dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento){
-        this.dataNascimento = dataNascimento;
-    }
+//    public LocalDate getDataNascimento(){
+//        return this.dataNascimento;
+//    }
+//
+//    public void setDataNascimento(LocalDate dataNascimento){
+//        this.dataNascimento = dataNascimento;
+//    }
 
     @Column(length = 50, nullable = false)
     private String nacionalidade;
 
-    public String getNacionalidade(){
-        return this.nacionalidade;
-    }
-
-    public void setNacionalidade(String nacionalidade){
-        this.nacionalidade = nacionalidade;
-    }
+//    public String getNacionalidade(){
+//        return this.nacionalidade;
+//    }
+//
+//    public void setNacionalidade(String nacionalidade){
+//        this.nacionalidade = nacionalidade;
+//    }
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
     private List<Livro> livros;
