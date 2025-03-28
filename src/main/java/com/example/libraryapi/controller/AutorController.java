@@ -7,6 +7,8 @@ import com.example.libraryapi.exceptions.RegistroDuplicadoException;
 import com.example.libraryapi.model.Autor;
 import com.example.libraryapi.repositories.AutorRepository;
 import com.example.libraryapi.services.AutorSevice;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,7 @@ public class AutorController {
     private AutorSevice autorSevice;
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody AutorDTO autor){
+    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO autor){
         try {
             Autor autorEntidade = autor.mapearParaAutor();
             this.autorSevice.salvar(autorEntidade);
@@ -100,7 +102,7 @@ public class AutorController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody AutorDTO dto){
+    public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto){
         try {
             var idAutor = UUID.fromString(id);
             Optional<Autor> autorOptional = autorSevice.obterPorId(idAutor);
