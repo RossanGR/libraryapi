@@ -2,6 +2,8 @@ package com.example.libraryapi.controller.common;
 
 import com.example.libraryapi.controller.dto.ErroCampo;
 import com.example.libraryapi.controller.dto.ErroResposta;
+import com.example.libraryapi.exceptions.OperacaoNaoPermitidaExeption;
+import com.example.libraryapi.exceptions.RegistroDuplicadoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,5 +33,23 @@ public class GlobalExeptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErroResposta handleInvalidPropertiesFormatException(InvalidPropertiesFormatException e) {
         return new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(RegistroDuplicadoException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErroResposta handleResgistroDuplicadoException(RegistroDuplicadoException e){
+        return ErroResposta.conflito(e.getMessage());
+    }
+
+    @ExceptionHandler(OperacaoNaoPermitidaExeption.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErroResposta handleOperacaoNaoPermitidaException(OperacaoNaoPermitidaExeption e){
+        return ErroResposta.conflito(e.getMessage());
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErroResposta handleErrosNaoTratados(RuntimeException e){
+        return new ErroResposta(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Ocorreu um erro inesperado", List.of());
     }
 }
