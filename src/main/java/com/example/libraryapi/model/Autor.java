@@ -1,9 +1,7 @@
 package com.example.libraryapi.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -32,6 +30,8 @@ public class Autor {
     private String nacionalidade;
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    @ToString.Exclude // evita loop no toString
+    @EqualsAndHashCode.Exclude // evita loop em comparações
     private List<Livro> livros;
 
     @CreatedDate // Para toda vez que fizer uma criação, o JPA se responsabiliza por preencher com a data

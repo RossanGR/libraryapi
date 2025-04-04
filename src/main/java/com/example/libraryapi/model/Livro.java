@@ -3,6 +3,8 @@ package com.example.libraryapi.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -40,6 +42,8 @@ public class Livro {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "autor_id")
+    @ToString.Exclude // evita loop no toString
+    @EqualsAndHashCode.Exclude // evita loop em comparações
     private Autor autor;
 
     @CreatedDate // Para toda vez que fizer uma criação, o JPA se responsabiliza por preencher com a data

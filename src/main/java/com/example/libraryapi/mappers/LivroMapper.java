@@ -6,6 +6,7 @@ import com.example.libraryapi.model.Livro;
 import com.example.libraryapi.repositories.AutorRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring", uses = AutorMapper.class) // o parametro uses serve para dizer que vai usar outro mapper
@@ -18,5 +19,7 @@ public abstract class LivroMapper {
 
     @Mapping(target = "autorDTO", source = "autor")
     public abstract LivroResponseDTO toDTO(Livro livro);
+
+    public abstract void atualizarLivroFromDTO(LivroRequestDTO dto, @MappingTarget Livro livro);
 }
 
