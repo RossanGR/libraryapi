@@ -9,15 +9,17 @@ import com.example.libraryapi.services.LivroService;
 import com.example.libraryapi.validator.LivroValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/livros")
 @RequiredArgsConstructor
+@EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO) // para resolver um erro de serialização que o java reclama
 public class LivroController implements GenericController {
 
     private final LivroService service;
@@ -53,17 +55,20 @@ public class LivroController implements GenericController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LivroResponseDTO>> pesquisa(
+    public ResponseEntity<Page<LivroResponseDTO>> pesquisa(
             @RequestParam(value = "isbn", required = false) String isbn,
             @RequestParam(value = "titulo", required = false) String titulo,
             @RequestParam(value = "nome-autor", required = false) String nomeAutor,
             @RequestParam(value = "genero", required = false) GeneroLivro genero,
-            @RequestParam(value = "ano-publicacao", required = false) Integer dataPublicacao
+            @RequestParam(value = "ano-publicacao", required = false) Integer dataPublicacao,
+            @RequestParam(value= "pagina",defaultValue = "0") Integer pagina,
+            @RequestParam(value= "tamanho-pagina",defaultValue = "10") Integer tamanhoPagina
     ) {
-        var livros = service.pesquisa(isbn, titulo, nomeAutor, genero, dataPublicacao);
-        var dtos = livros.stream().map(mapper::toDTO).toList();
+        Page<Livro>  paginaResultado = service.pesquisa(isbn, titulo, nomeAutor, genero, dataPublicacao, pagina, tamanhoPagina);
+        Page<LivroResponseDTO> resultado = paginaResultado.map(mapper::toDTO);
 
-        return ResponseEntity.ok(dtos);
+
+        return ResponseEntity.ok(resultado);
     }
 
     @PutMapping("{id}")

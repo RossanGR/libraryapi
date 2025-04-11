@@ -20,6 +20,6 @@ public abstract class LivroMapper {
     @Mapping(target = "autorDTO", source = "autor")
     public abstract LivroResponseDTO toDTO(Livro livro);
 
-    public abstract void atualizarLivroFromDTO(LivroRequestDTO dto, @MappingTarget Livro livro);
+    public abstract void atualizarLivroFromDTO(LivroRequestDTO dto, @MappingTarget Livro livro); // o @MappingTarget serve para dizer que o livro já existe e só vai atualizar os dados dele
 }
 

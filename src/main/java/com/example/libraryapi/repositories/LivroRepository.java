@@ -15,4 +15,6 @@ public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecific
     boolean existsByAutor(Optional<Autor> autor);
 
     Optional<Livro> findByIsbn(String isbn);
+
+
 }
