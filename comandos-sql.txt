@@ -22,3 +22,13 @@ CREATE TABLE livro(
 
  constraint chk_genero check(genero in ('FICCAO', 'FANTASIA', 'MISTERIAO', 'ACAO', 'CIENCIA'))
 )
+
+
+CREATE TABLE usuario(
+ id uuid not null primary key,
+ login varchar(20) not null unique,
+ senha varchar(300) not null,
+ role varchar[],
+ data_cadastro timestamp,
+ data_atualizacao timestamp
+)

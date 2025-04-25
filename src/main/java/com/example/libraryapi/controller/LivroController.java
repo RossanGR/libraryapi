@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 
@@ -27,6 +28,7 @@ public class LivroController implements GenericController {
     private final LivroValidator validator;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('OPERADOR','GERENTE')") // @PreAuthorize só é habilitado se o método estiver na classe de segurança e tiver o  @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
     public ResponseEntity<Object> salvar(@RequestBody @Valid LivroRequestDTO dto) {
         Livro livro = mapper.toEntity(dto);
         service.salvar(livro);
@@ -35,6 +37,7 @@ public class LivroController implements GenericController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR','GERENTE')")
     public ResponseEntity<LivroResponseDTO> obterDetalhes(@PathVariable("id") String id){
         return service.obterPorId(UUID.fromString(id)).map(livro -> {
                 var dto = mapper.toDTO(livro);
@@ -44,6 +47,7 @@ public class LivroController implements GenericController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR','GERENTE')")
     public ResponseEntity<Object> deletar(@PathVariable("id") String id) {
         var livro = service.obterPorId(UUID.fromString(id));
         if (livro.isEmpty()) {
@@ -55,6 +59,7 @@ public class LivroController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('OPERADOR','GERENTE')")
     public ResponseEntity<Page<LivroResponseDTO>> pesquisa(
             @RequestParam(value = "isbn", required = false) String isbn,
             @RequestParam(value = "titulo", required = false) String titulo,
@@ -72,6 +77,7 @@ public class LivroController implements GenericController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR','GERENTE')")
     public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody @Valid LivroRequestDTO dto){
         return service.obterPorId(UUID.fromString(id))
                 .map(livro -> {
