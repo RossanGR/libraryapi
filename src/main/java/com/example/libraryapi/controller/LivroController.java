@@ -5,13 +5,19 @@ import com.example.libraryapi.controller.dto.LivroResponseDTO;
 import com.example.libraryapi.mappers.LivroMapper;
 import com.example.libraryapi.model.GeneroLivro;
 import com.example.libraryapi.model.Livro;
+import com.example.libraryapi.model.Usuario;
+import com.example.libraryapi.security.SecurityService;
 import com.example.libraryapi.services.LivroService;
+import com.example.libraryapi.services.UsuarioService;
 import com.example.libraryapi.validator.LivroValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 
@@ -26,11 +32,18 @@ public class LivroController implements GenericController {
     private final LivroService service;
     private final LivroMapper mapper;
     private final LivroValidator validator;
+    private final UsuarioService usuarioService;
+    private final SecurityService securityService;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('OPERADOR','GERENTE')") // @PreAuthorize só é habilitado se o método estiver na classe de segurança e tiver o  @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-    public ResponseEntity<Object> salvar(@RequestBody @Valid LivroRequestDTO dto) {
+    public ResponseEntity<Object> salvar(@RequestBody @Valid LivroRequestDTO dto, Authentication authentication) {
+        UserDetails usuario = (UserDetails) authentication.getPrincipal();
+        Usuario user = usuarioService.obterPorLogin(usuario.getUsername());
+
         Livro livro = mapper.toEntity(dto);
+        livro.setIdUsuario(user.getId());
+
         service.salvar(livro);
         var url = gerarHeaderLocation(livro.getId());
         return ResponseEntity.created(url).build();
@@ -53,6 +66,7 @@ public class LivroController implements GenericController {
         if (livro.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
         service.deletar(livro.get());
         return ResponseEntity.noContent().build();
 
