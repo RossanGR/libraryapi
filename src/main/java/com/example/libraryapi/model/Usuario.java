@@ -26,6 +26,9 @@ public class Usuario {
     @Column
     private String senha;
 
+    @Column
+    private String email;
+
     @Type(ListArrayType.class) // Serve para usar o tipo de dado array no banco de dados
     @Column(name = "role", columnDefinition = "varchar[]")
     private List<String> role;
