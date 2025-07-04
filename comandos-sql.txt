@@ -33,3 +33,12 @@ CREATE TABLE usuario(
  data_cadastro timestamp,
  data_atualizacao timestamp
 )
+
+
+CREATE TABLE client (
+    id UUID PRIMARY KEY NOT NULL, -- ou uuid_generate_v4() dependendo do banco
+    client_id VARCHAR(255) NOT NULL,
+    client_secret VARCHAR(255) NOT NULL,
+    redirect_uri VARCHAR(512) NOT NULL,
+    scope VARCHAR(255)
+);
